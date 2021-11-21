@@ -41,6 +41,8 @@ flags.DEFINE_boolean('dont_show', False, 'dont show video output')
 flags.DEFINE_boolean('info', False, 'show detailed info of tracked objects')
 flags.DEFINE_boolean('count', False, 'count objects being tracked on screen')
 
+FRAME_ID = 0
+
 def main(_argv):
 	# Definition of the parameters
 	max_cosine_distance = 0.4
@@ -98,7 +100,7 @@ def main(_argv):
 	frame_num = 0
 	# while video is running
 
-	df = pd.DataFrame(columns=['Tracker ID', 'Class', 'BBox Coords', 'Time'])
+	#df = pd.DataFrame(columns=['Tracker ID', 'Class', 'BBox Coords', 'Time', 'FRAME_ID'])
 
 	while True:
 		return_value, frame = vid.read()
@@ -235,7 +237,7 @@ def main(_argv):
 			if FLAGS.info:
 				print("Tracker ID: {}, Class: {},  BBox Coords (xmin, ymin, xmax, ymax): {}".format(str(track.track_id), class_name, (int(bbox[0]), int(bbox[1]), int(bbox[2]), int(bbox[3]))))
 
-			dict = {'Time': datetime.now(), 'Tracker ID': str(track.track_id), 'Class': class_name, 'BBox Coords (xmin, ymin, xmax, ymax)': (int(bbox[0]), int(bbox[1]), int(bbox[2]), int(bbox[3]))}
+			dict = {'Time': datetime.now(), 'Tracker ID': str(track.track_id), 'Class': class_name, 'BBox Coords (xmin, ymin, xmax, ymax)': (int(bbox[0]), int(bbox[1]), int(bbox[2]), int(bbox[3])), 'FRAME_ID':FRAME_ID}
 
 			df = df.append(dict, ignore_index = True)
 
@@ -252,6 +254,9 @@ def main(_argv):
 		if FLAGS.output:
 			out.write(result)
 		if cv2.waitKey(1) & 0xFF == ord('q'): break
+
+		FRAME_ID += 1
+
 	cv2.destroyAllWindows()
 
 	print(df)
