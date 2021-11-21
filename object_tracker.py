@@ -97,7 +97,7 @@ def main(_argv):
 	frame_num = 0
 	# while video is running
 
-	df = pd.DataFrame(columns=['Tracker ID', 'Class', 'BBox Coords'])
+	df = pd.DataFrame(columns=['Tracker ID', 'Class', 'BBox Coords (xmin, ymin, xmax, ymax)'])
 
 	while True:
 		return_value, frame = vid.read()
@@ -254,7 +254,7 @@ def main(_argv):
 	cv2.destroyAllWindows()
 
 	print(df)
-	df.to_csv('coords.csv')
+	df.to_csv('coords.csv', ignore_index=True)
 
 if __name__ == '__main__':
 	try:
