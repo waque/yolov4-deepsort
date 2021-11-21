@@ -5,6 +5,7 @@ import time
 import tensorflow as tf
 import tensorflow.keras as keras
 import pandas as pd
+from datetime import datetime
 physical_devices = tf.config.experimental.list_physical_devices('GPU')
 if len(physical_devices) > 0:
 	tf.config.experimental.set_memory_growth(physical_devices[0], True)
@@ -97,7 +98,7 @@ def main(_argv):
 	frame_num = 0
 	# while video is running
 
-	df = pd.DataFrame(columns=['Tracker ID', 'Class', 'BBox Coords (xmin, ymin, xmax, ymax)'])
+	df = pd.DataFrame(columns=['Tracker ID', 'Class', 'BBox Coords', 'Time'])
 
 	while True:
 		return_value, frame = vid.read()
@@ -234,7 +235,7 @@ def main(_argv):
 			if FLAGS.info:
 				print("Tracker ID: {}, Class: {},  BBox Coords (xmin, ymin, xmax, ymax): {}".format(str(track.track_id), class_name, (int(bbox[0]), int(bbox[1]), int(bbox[2]), int(bbox[3]))))
 
-			dict = {'Tracker ID': str(track.track_id), 'Class': class_name, 'BBox Coords (xmin, ymin, xmax, ymax)': (int(bbox[0]), int(bbox[1]), int(bbox[2]), int(bbox[3]))}
+			dict = {'Time': datetime.now(), 'Tracker ID': str(track.track_id), 'Class': class_name, 'BBox Coords (xmin, ymin, xmax, ymax)': (int(bbox[0]), int(bbox[1]), int(bbox[2]), int(bbox[3]))}
 
 			df = df.append(dict, ignore_index = True)
 
@@ -254,7 +255,7 @@ def main(_argv):
 	cv2.destroyAllWindows()
 
 	print(df)
-	df.to_csv('coords.csv', index=False)
+	df.to_csv('coords.csv')
 
 if __name__ == '__main__':
 	try:
