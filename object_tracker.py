@@ -4,6 +4,7 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 import time
 import tensorflow as tf
 import tensorflow.keras as keras
+import pandas as pd
 physical_devices = tf.config.experimental.list_physical_devices('GPU')
 if len(physical_devices) > 0:
 	tf.config.experimental.set_memory_growth(physical_devices[0], True)
@@ -95,6 +96,9 @@ def main(_argv):
 
 	frame_num = 0
 	# while video is running
+
+	df = pd.DataFrame(columns=['Tracker ID', 'Class', 'BBox Coords'])
+
 	while True:
 		return_value, frame = vid.read()
 		if return_value:
@@ -168,10 +172,10 @@ def main(_argv):
 		class_names = utils.read_class_names(cfg.YOLO.CLASSES)
 
 		# by default allow all classes in .names file
-		allowed_classes = list(class_names.values())
+		#allowed_classes = list(class_names.values())
 		
 		# custom allowed classes (uncomment line below to customize tracker for only people)
-		#allowed_classes = ['person']
+		allowed_classes = ['person']
 
 		# loop through objects and use class index to get class name, allow only classes in allowed_classes list
 		names = []
@@ -188,6 +192,7 @@ def main(_argv):
 		if FLAGS.count:
 			cv2.putText(frame, "Objects being tracked: {}".format(count), (5, 35), cv2.FONT_HERSHEY_COMPLEX_SMALL, 2, (0, 255, 0), 2)
 			print("Objects being tracked: {}".format(count))
+
 		# delete detections that are not in allowed_classes
 		bboxes = np.delete(bboxes, deleted_indx, axis=0)
 		scores = np.delete(scores, deleted_indx, axis=0)
@@ -229,6 +234,10 @@ def main(_argv):
 			if FLAGS.info:
 				print("Tracker ID: {}, Class: {},  BBox Coords (xmin, ymin, xmax, ymax): {}".format(str(track.track_id), class_name, (int(bbox[0]), int(bbox[1]), int(bbox[2]), int(bbox[3]))))
 
+			dict = {'Tracker ID': str(track.track_id), 'Class': class_name, 'BBox Coords (xmin, ymin, xmax, ymax)': (int(bbox[0]), int(bbox[1]), int(bbox[2]), int(bbox[3]))}
+
+			df = df.append(dict, ignore_index = True)
+
 		# calculate frames per second of running detections
 		fps = 1.0 / (time.time() - start_time)
 		print("FPS: %.2f" % fps)
@@ -243,6 +252,9 @@ def main(_argv):
 			out.write(result)
 		if cv2.waitKey(1) & 0xFF == ord('q'): break
 	cv2.destroyAllWindows()
+
+	print(df.shape)
+	df.to_csv('coords.csv')
 
 if __name__ == '__main__':
 	try:
