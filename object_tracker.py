@@ -253,7 +253,7 @@ def main(_argv):
 		if cv2.waitKey(1) & 0xFF == ord('q'): break
 	cv2.destroyAllWindows()
 
-	print(df.shape)
+	print(df)
 	df.to_csv('coords.csv')
 
 if __name__ == '__main__':
