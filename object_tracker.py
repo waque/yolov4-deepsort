@@ -100,7 +100,7 @@ def main(_argv):
 	frame_num = 0
 	# while video is running
 	FRAME_ID = 0
-	#df = pd.DataFrame(columns=['Tracker ID', 'Class', 'BBox Coords', 'Time', 'FRAME_ID'])
+	df = pd.DataFrame(columns=['Time', 'Tracker ID', 'Class', 'BBox Coords (xmin, ymin, xmax, ymax)', 'FRAME_ID'])
 
 	while True:
 		return_value, frame = vid.read()
