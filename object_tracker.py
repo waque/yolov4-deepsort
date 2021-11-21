@@ -100,7 +100,7 @@ def main(_argv):
 	frame_num = 0
 	# while video is running
 	FRAME_ID = 0
-	df = pd.DataFrame(columns=['Time', 'Tracker ID', 'Class', 'BBox Coords (xmin, ymin, xmax, ymax)', 'FRAME_ID'])
+	df = pd.DataFrame(columns=['Time', 'Tracker ID', 'Class', 'xmin', 'ymin', 'xmax', 'ymax', 'FRAME_ID'])
 
 	while True:
 		return_value, frame = vid.read()
@@ -237,7 +237,7 @@ def main(_argv):
 			if FLAGS.info:
 				print("Tracker ID: {}, Class: {},  BBox Coords (xmin, ymin, xmax, ymax): {}".format(str(track.track_id), class_name, (int(bbox[0]), int(bbox[1]), int(bbox[2]), int(bbox[3]))))
 
-			dict = {'Time': datetime.now(), 'Tracker ID': str(track.track_id), 'Class': class_name, 'BBox Coords (xmin, ymin, xmax, ymax)': (int(bbox[0]), int(bbox[1]), int(bbox[2]), int(bbox[3])), 'FRAME_ID':FRAME_ID}
+			dict = {'Time': datetime.now(), 'Tracker ID': str(track.track_id), 'Class': class_name, 'xmin': int(bbox[0]), 'ymin': int(bbox[1]), 'xmax': int(bbox[2]), 'ymax': int(bbox[3]), 'FRAME_ID':FRAME_ID}
 
 			df = df.append(dict, ignore_index = True)
 
