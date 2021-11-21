@@ -254,7 +254,7 @@ def main(_argv):
 	cv2.destroyAllWindows()
 
 	print(df)
-	df.to_csv('coords.csv', ignore_index=True)
+	df.to_csv('coords.csv', index=False)
 
 if __name__ == '__main__':
 	try:
