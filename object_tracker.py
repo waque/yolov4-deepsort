@@ -41,7 +41,7 @@ flags.DEFINE_boolean('dont_show', False, 'dont show video output')
 flags.DEFINE_boolean('info', False, 'show detailed info of tracked objects')
 flags.DEFINE_boolean('count', False, 'count objects being tracked on screen')
 
-FRAME_ID = 0
+
 
 def main(_argv):
 	# Definition of the parameters
@@ -99,7 +99,7 @@ def main(_argv):
 
 	frame_num = 0
 	# while video is running
-
+	FRAME_ID = 0
 	#df = pd.DataFrame(columns=['Tracker ID', 'Class', 'BBox Coords', 'Time', 'FRAME_ID'])
 
 	while True:
