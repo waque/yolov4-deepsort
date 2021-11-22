@@ -44,7 +44,7 @@ flags.DEFINE_boolean('count', False, 'count objects being tracked on screen')
 
 def main(_argv):
 	# Definition of the parameters
-	SKIP_FRAMES=4
+	SKIP_FRAMES=2 #skip 1/2
 
 	max_cosine_distance = 0.4
 	nn_budget = None
@@ -113,7 +113,8 @@ def main(_argv):
 			break
 		frame_num +=1
 		print('Frame #: ', frame_num)
-		if frame_num % SKIP_FRAMES == 0:
+		if frame_num % SKIP_FRAMES != 0:
+			#skip 1/SKIP_FRAMES
 			continue
 		frame_size = frame.shape[:2]
 		image_data = cv2.resize(frame, (input_size, input_size))
