@@ -42,9 +42,10 @@ flags.DEFINE_boolean('info', False, 'show detailed info of tracked objects')
 flags.DEFINE_boolean('count', False, 'count objects being tracked on screen')
 
 
-
 def main(_argv):
 	# Definition of the parameters
+	SKIP_FRAMES=4
+
 	max_cosine_distance = 0.4
 	nn_budget = None
 	nms_max_overlap = 1.0
@@ -112,6 +113,8 @@ def main(_argv):
 			break
 		frame_num +=1
 		print('Frame #: ', frame_num)
+		if frame_num % SKIP_FRAMES == 0:
+			continue
 		frame_size = frame.shape[:2]
 		image_data = cv2.resize(frame, (input_size, input_size))
 		image_data = image_data / 255.
