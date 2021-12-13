@@ -113,9 +113,7 @@ def main(_argv):
 			break
 		frame_num +=1
 		print('Frame #: ', frame_num)
-		if frame_num % SKIP_FRAMES != 0:
-			#skip 1/SKIP_FRAMES
-			continue
+		
 		frame_size = frame.shape[:2]
 		image_data = cv2.resize(frame, (input_size, input_size))
 		image_data = image_data / 255.
